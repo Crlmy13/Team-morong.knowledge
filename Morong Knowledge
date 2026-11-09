@@ -1,0 +1,1436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Morong, Rizal - Official Knowledge & DRRM Portal</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    .tab-content {
+      display: none;
+      animation: fadeIn 0.25s ease-in-out forwards;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .modal-anim {
+      animation: modalScale 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes modalScale {
+      from { opacity: 0; transform: scale(0.96); }
+      to { opacity: 1; transform: scale(1); }
+    }
+  </style>
+</head>
+<body class="bg-slate-100 text-slate-800 min-h-screen flex flex-col antialiased">
+
+  <!-- ================================================================= -->
+  <!-- 1. AUTHENTICATION SCREEN (LOGIN / SIGN UP) -->
+  <!-- ================================================================= -->
+  <div id="auth-screen" class="fixed inset-0 z-50 bg-slate-900 flex items-center justify-center p-4 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-blue-900 via-slate-900 to-black">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8 border border-slate-700/50 relative overflow-hidden">
+      
+      <!-- Brand Header -->
+      <div class="text-center mb-8 space-y-2">
+        <div class="inline-flex items-center justify-center w-14 h-14 bg-blue-600 text-white font-black text-2xl rounded-2xl shadow-lg shadow-blue-500/30 mb-2">
+          M
+        </div>
+        <h1 class="text-2xl font-extrabold text-slate-900 tracking-tight">Morong Knowledge Hub</h1>
+        <p class="text-xs text-slate-500 font-medium">Municipality of Morong, Province of Rizal</p>
+      </div>
+
+      <!-- Auth Sub-tabs -->
+      <div class="flex bg-slate-100 p-1 rounded-xl mb-6 text-xs font-bold">
+        <button id="tab-login-btn" onclick="switchAuthTab('login')" class="flex-1 py-2.5 rounded-lg bg-white text-blue-600 shadow-sm transition-all">Log In</button>
+        <button id="tab-signup-btn" onclick="switchAuthTab('signup')" class="flex-1 py-2.5 rounded-lg text-slate-500 hover:text-slate-800 transition-all">Sign Up</button>
+      </div>
+
+      <!-- FORM 1: LOGIN -->
+      <form id="login-form" onsubmit="handleAuthSubmit(event, 'login')" class="space-y-4">
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">Email Address</label>
+          <input type="email" required placeholder="resident@morong.gov.ph" class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all">
+        </div>
+        <div>
+          <div class="flex justify-between items-center mb-1">
+            <label class="text-xs font-bold uppercase tracking-wider text-slate-600">Password</label>
+            <a href="#" class="text-[11px] font-semibold text-blue-600 hover:underline">Forgot password?</a>
+          </div>
+          <input type="password" required placeholder="••••••••" class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all">
+        </div>
+        <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs uppercase tracking-wider py-3.5 rounded-xl shadow-lg shadow-blue-600/30 transition-all transform active:scale-[0.99]">
+          LOG IN &rarr;
+        </button>
+      </form>
+
+      <!-- FORM 2: SIGN UP -->
+      <form id="signup-form" onsubmit="handleAuthSubmit(event, 'signup')" class="space-y-4 hidden">
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">Full Name</label>
+          <input type="text" required placeholder="Juan Dela Cruz" class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all">
+        </div>
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">Email Address</label>
+          <input type="email" required placeholder="juan@example.com" class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all">
+        </div>
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">Barangay in Morong</label>
+          <select required class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all">
+            <option value="">Select Barangay</option>
+            <option value="Bombongan">Barangay Bombongan</option>
+            <option value="Can-Cal-Lan">Barangay Can-Cal-Lan</option>
+            <option value="Lagundi">Barangay Lagundi</option>
+            <option value="Maybancal">Barangay Maybancal</option>
+            <option value="San Guillermo">Barangay San Guillermo</option>
+            <option value="San Jose">Barangay San Jose (Poblacion)</option>
+            <option value="San Juan">Barangay San Juan (Poblacion)</option>
+            <option value="San Pedro">Barangay San Pedro (Poblacion)</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">Password</label>
+          <input type="password" required placeholder="••••••••" class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all">
+        </div>
+        <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs uppercase tracking-wider py-3.5 rounded-xl shadow-lg shadow-emerald-600/30 transition-all transform active:scale-[0.99]">
+          Create Account &rarr;
+        </button>
+      </form>
+
+      <div class="mt-6 text-center">
+        <p class="text-[11px] text-slate-400">Official Portal of Morong, Rizal</p>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ================================================================= -->
+  <!-- 2. MAIN APP DASHBOARD -->
+  <!-- ================================================================= -->
+  <div id="app-dashboard" class="hidden flex-col min-h-screen">
+
+    <!-- TOP NAVIGATION BAR -->
+    <header class="bg-slate-900 text-white sticky top-0 z-40 shadow-xl border-b border-slate-800">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+        
+        <!-- Brand Logo -->
+        <div class="flex items-center space-x-3 cursor-pointer" onclick="switchMainTab('history')">
+          <div class="bg-blue-600 text-white font-black text-xl w-10 h-10 rounded-xl flex items-center justify-center shadow-md">
+            M
+          </div>
+          <div>
+            <h1 class="font-extrabold text-base leading-tight tracking-tight text-white">Morong Knowledge Hub</h1>
+            <p class="text-[10px] text-slate-400 font-medium uppercase tracking-wider">Province of Rizal</p>
+          </div>
+        </div>
+
+        <!-- Desktop Tab Navigation -->
+        <nav class="hidden md:flex items-center space-x-1 lg:space-x-2 text-xs font-bold">
+          <button onclick="switchMainTab('history')" id="nav-history" class="nav-btn px-3 py-2.5 rounded-xl text-blue-400 bg-blue-950/60 transition-all flex items-center space-x-1.5">
+            <span>🏛️</span> <span>History & Culture</span>
+          </button>
+          <button onclick="switchMainTab('drrm')" id="nav-drrm" class="nav-btn px-3 py-2.5 rounded-xl text-slate-300 hover:text-white hover:bg-slate-800 transition-all flex items-center space-x-1.5">
+            <span>🛡️</span> <span>DRRM & Evacuation</span>
+          </button>
+          <button onclick="switchMainTab('preparedness')" id="nav-preparedness" class="nav-btn px-3 py-2.5 rounded-xl text-slate-300 hover:text-white hover:bg-slate-800 transition-all flex items-center space-x-1.5">
+            <span>⚠️</span> <span>Disaster Preparedness</span>
+          </button>
+          <button onclick="switchMainTab('directory')" id="nav-directory" class="nav-btn px-3 py-2.5 rounded-xl text-slate-300 hover:text-white hover:bg-slate-800 transition-all flex items-center space-x-1.5">
+            <span>📞</span> <span>Emergency Directory</span>
+          </button>
+          <button onclick="switchMainTab('quiz')" id="nav-quiz" class="nav-btn px-3 py-2.5 rounded-xl text-slate-300 hover:text-white hover:bg-slate-800 transition-all flex items-center space-x-1.5">
+            <span>🧠</span> <span>Knowledge Assessment</span>
+          </button>
+        </nav>
+
+        <!-- User Profile, Settings Button & Logout -->
+        <div class="flex items-center space-x-3">
+          <div class="hidden sm:flex flex-col text-right">
+            <span id="user-display-name" class="text-xs font-bold text-slate-100">Morong Resident</span>
+            <span class="text-[10px] text-emerald-400 font-medium">● Online</span>
+          </div>
+          <!-- SETTINGS BUTTON FOR RESIDENCE -->
+          <button onclick="openSettingsModal()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-bold text-xs px-3 py-2 rounded-xl transition-all flex items-center space-x-1">
+            <span>⚙️ Settings</span>
+          </button>
+          <button onclick="logout()" class="bg-slate-800 hover:bg-red-600/20 hover:text-red-400 text-slate-300 border border-slate-700 font-bold text-xs px-3 py-2 rounded-xl transition-all flex items-center space-x-1">
+            <span>Log out</span>
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Mobile Nav Bar -->
+      <div class="md:hidden flex overflow-x-auto px-4 py-2 bg-slate-950 border-t border-slate-800 space-x-2 text-xs font-bold no-scrollbar">
+        <button onclick="switchMainTab('history')" id="mobile-nav-history" class="mobile-nav-btn px-3 py-2 rounded-lg bg-blue-600 text-white whitespace-nowrap">History & Culture</button>
+        <button onclick="switchMainTab('drrm')" id="mobile-nav-drrm" class="mobile-nav-btn px-3 py-2 rounded-lg bg-slate-800 text-slate-300 whitespace-nowrap">DRRM</button>
+        <button onclick="switchMainTab('preparedness')" id="mobile-nav-preparedness" class="mobile-nav-btn px-3 py-2 rounded-lg bg-slate-800 text-slate-300 whitespace-nowrap">Preparedness</button>
+        <button onclick="switchMainTab('directory')" id="mobile-nav-directory" class="mobile-nav-btn px-3 py-2 rounded-lg bg-slate-800 text-slate-300 whitespace-nowrap">Directory</button>
+        <button onclick="switchMainTab('quiz')" id="mobile-nav-quiz" class="mobile-nav-btn px-3 py-2 rounded-lg bg-slate-800 text-slate-300 whitespace-nowrap">Quiz</button>
+      </div>
+    </header>
+
+
+    <!-- ================================================================= -->
+    <!-- 3. DYNAMIC CONTENT AREA -->
+    <!-- ================================================================= -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+      <!-- ================= TAB 1: HISTORY & CULTURE ================= -->
+      <section id="view-history" class="tab-content active space-y-6">
+        <div class="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200/80 shadow-sm flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4">
+          <div>
+            <span class="text-blue-600 font-extrabold text-xs tracking-wider uppercase">MORONG, RIZAL HERITAGE</span>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight mt-1">History, Culture & Local Destinations</h2>
+            <p class="text-slate-500 text-sm mt-1">Explore Morong's timeline, heritage, tourist spots, restaurants, cafés, and barangays.</p>
+          </div>
+          
+          <!-- FILTER BUTTONS -->
+          <div class="flex flex-wrap gap-1.5 text-xs font-bold bg-slate-50 p-1.5 rounded-2xl border border-slate-200">
+            <button onclick="filterHistory('all', this)" class="hist-filter-btn px-3.5 py-2 rounded-xl bg-blue-600 text-white shadow-sm transition-all">All</button>
+            <button onclick="filterHistory('timeline', this)" class="hist-filter-btn px-3.5 py-2 rounded-xl text-slate-600 hover:text-slate-900 transition-all">Timeline</button>
+            <button onclick="filterHistory('history', this)" class="hist-filter-btn px-3.5 py-2 rounded-xl text-slate-600 hover:text-slate-900 transition-all">History</button>
+            <button onclick="filterHistory('culture', this)" class="hist-filter-btn px-3.5 py-2 rounded-xl text-slate-600 hover:text-slate-900 transition-all">Culture</button>
+            <button onclick="filterHistory('tourist-spot', this)" class="hist-filter-btn px-3.5 py-2 rounded-xl text-slate-600 hover:text-slate-900 transition-all">Tourist Spot</button>
+            <button onclick="filterHistory('dining', this)" class="hist-filter-btn px-3.5 py-2 rounded-xl text-slate-600 hover:text-slate-900 transition-all">Restaurants & Cafés</button>
+            <button onclick="filterHistory('barangay', this)" class="hist-filter-btn px-3.5 py-2 rounded-xl text-slate-600 hover:text-slate-900 transition-all">Barangay</button>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="history-cards-grid">
+          <!-- Dynamically Injected -->
+        </div>
+      </section>
+
+
+      <!-- ================= TAB 2: DRRM & EVACUATION ================= -->
+      <section id="view-drrm" class="tab-content space-y-6">
+        <div class="bg-gradient-to-r from-slate-900 to-blue-950 text-white p-6 sm:p-8 rounded-2xl shadow-md border border-slate-800">
+          <span class="bg-red-500/20 text-red-400 border border-red-500/30 text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full">DISASTER RISK REDUCTION</span>
+          <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight mt-2">Disaster Preparedness & Evacuation Centers</h2>
+          <p class="text-slate-300 text-sm mt-1 max-w-2xl">Safety guides and official Evacuation Center listings for the 8 barangays of Morong, Rizal.</p>
+        </div>
+
+        <!-- Evacuation Table -->
+        <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-6">
+          <h3 class="font-extrabold text-lg text-slate-900 mb-4 flex items-center">
+            <span class="mr-2">📍</span> Evacuation Centers per Barangay (Morong, Rizal)
+          </h3>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs sm:text-sm">
+              <thead>
+                <tr class="bg-slate-50 border-b border-slate-200 text-slate-600 font-bold uppercase tracking-wider text-[11px]">
+                  <th class="py-3.5 px-4 rounded-l-lg">Barangay</th>
+                  <th class="py-3.5 px-4">Evacuation Center / Facility</th>
+                  <th class="py-3.5 px-4">Capacity</th>
+                  <th class="py-3.5 px-4">MDRRMO Contact</th>
+                  <th class="py-3.5 px-4 rounded-r-lg">Status</th>
+                </tr>
+              </thead>
+              <tbody id="evac-table-body" class="divide-y divide-slate-100">
+                <!-- Dynamically Injected -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ================= TAB 3: DISASTER PREPAREDNESS TAB ================= -->
+      <section id="view-preparedness" class="tab-content space-y-6">
+        <div class="bg-gradient-to-r from-amber-600 to-orange-700 text-white p-6 sm:p-8 rounded-2xl shadow-md">
+          <span class="bg-white/20 text-white text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full">WEATHER & SAFETY MONITOR</span>
+          <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight mt-2">Disaster Preparedness & Weather Advisories</h2>
+          <p class="text-amber-100 text-sm mt-1 max-w-2xl">Kasalukuyang lagay ng panahon, mga babala sa bagyo, at mga gabay sa paghahanda para sa mamamayan ng Morong.</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div class="lg:col-span-2 bg-white rounded-2xl border border-slate-200/80 shadow-sm p-6 space-y-4">
+            <div class="flex items-center justify-between border-b pb-3">
+              <div class="flex items-center space-x-2">
+                <span class="text-2xl">🌀</span>
+                <div>
+                  <h3 class="font-extrabold text-base text-slate-900">Active Weather Advisory & Tropical Cyclone Bulletin</h3>
+                  <p class="text-xs text-slate-500">PAGASA Update for Rizal & Southern Luzon Region</p>
+                </div>
+              </div>
+              <span class="bg-amber-100 text-amber-800 text-[10px] font-black px-2.5 py-1 rounded-full uppercase">Signal No. 1 Warning</span>
+            </div>
+
+            <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 text-xs text-amber-900 space-y-2">
+              <p class="font-bold">⚠ Babala sa Bagyo / Low Pressure Area (LPA):</p>
+              <p>Inaabisuhan ang lahat ng residente ng Morong, lalo na ang mga malapit sa Laguna de Bay at mga tabing-ilog sa Bombongan at San Jose, na mag-ingat sa posibleng pagbaha at pagguho ng lupa dulot ng katamtaman hanggang malakas na pag-ulan.</p>
+            </div>
+
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-2 text-center text-xs">
+              <div class="bg-slate-50 p-3 rounded-xl border border-slate-100">
+                <span class="block text-slate-400 text-[10px] font-bold">WIND SPEED</span>
+                <span class="font-extrabold text-slate-800 text-sm">45 - 60 km/h</span>
+              </div>
+              <div class="bg-slate-50 p-3 rounded-xl border border-slate-100">
+                <span class="block text-slate-400 text-[10px] font-bold">RAINFALL</span>
+                <span class="font-extrabold text-slate-800 text-sm">Moderate-Heavy</span>
+              </div>
+              <div class="bg-slate-50 p-3 rounded-xl border border-slate-100">
+                <span class="block text-slate-400 text-[10px] font-bold">DAM LEVEL</span>
+                <span class="font-extrabold text-slate-800 text-sm">Normal Range</span>
+              </div>
+              <div class="bg-slate-50 p-3 rounded-xl border border-slate-100">
+                <span class="block text-slate-400 text-[10px] font-bold">ALERT LEVEL</span>
+                <span class="font-extrabold text-amber-600 text-sm">YELLOW ALERT</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-6 space-y-4">
+            <h3 class="font-extrabold text-base text-slate-900 flex items-center">
+              <span class="mr-2">🎒</span> Emergency Go Bag Checklist
+            </h3>
+            <p class="text-xs text-slate-500">Ihanda ang mga sumusunod na gamit sa isang bag na madaling bitbitin:</p>
+            <ul class="text-xs space-y-2 text-slate-700">
+              <li class="flex items-center space-x-2"><span class="text-emerald-500">✓</span> <span>Tubig na maiinom (good for 3 days)</span></li>
+              <li class="flex items-center space-x-2"><span class="text-emerald-500">✓</span> <span>Pagkaing hindi madaling mapanis (canned goods)</span></li>
+              <li class="flex items-center space-x-2"><span class="text-emerald-500">✓</span> <span>First Aid Kit & Maintenance Medicines</span></li>
+              <li class="flex items-center space-x-2"><span class="text-emerald-500">✓</span> <span>Flashlight, Powerbank & Ekstra Batarya</span></li>
+              <li class="flex items-center space-x-2"><span class="text-emerald-500">✓</span> <span>Pito (Whistle) & Mahahalagang Dokumento</span></li>
+              <li class="flex items-center space-x-2"><span class="text-emerald-500">✓</span> <span>Ekstrang Damit & Raincoat</span></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm space-y-2">
+            <div class="text-blue-600 font-extrabold text-xs">STEP 1</div>
+            <h4 class="font-extrabold text-base text-slate-900">Bago ang Bagyo (Before)</h4>
+            <ul class="text-xs text-slate-600 space-y-1.5 list-disc pl-4">
+              <li>I-check ang bubong at pundasyon ng bahay.</li>
+              <li>Makinig sa opisyal na balita mula sa MDRRMO Morong.</li>
+              <li>Icharge ang mga cellphone at powerbank.</li>
+            </ul>
+          </div>
+
+          <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm space-y-2">
+            <div class="text-amber-600 font-extrabold text-xs">STEP 2</div>
+            <h4 class="font-extrabold text-base text-slate-900">Habang May Bagyo (During)</h4>
+            <ul class="text-xs text-slate-600 space-y-1.5 list-disc pl-4">
+              <li>Manatili sa loob ng bahay o evacuation center.</li>
+              <li>Patayin ang main switch ng kuryente kung tumataas ang baha.</li>
+              <li>Iwasang lumusong sa tubig-baha.</li>
+            </ul>
+          </div>
+
+          <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm space-y-2">
+            <div class="text-emerald-600 font-extrabold text-xs">STEP 3</div>
+            <h4 class="font-extrabold text-base text-slate-900">Pagkatapos ng Bagyo (After)</h4>
+            <ul class="text-xs text-slate-600 space-y-1.5 list-disc pl-4">
+              <li>Siguraduhing ligtas ang bahay bago bumalik mula sa evacuation site.</li>
+              <li>Mag-ingat sa mga naputol na kable ng kuryente.</li>
+              <li>Iulat ang mga pinsala sa inyong Barangay Hall.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ================= TAB 4: EMERGENCY DIRECTORY ================= -->
+      <section id="view-directory" class="tab-content space-y-6">
+        <div class="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200/80 shadow-sm">
+          <span class="text-emerald-600 font-extrabold text-xs tracking-wider uppercase">24/7 HOTLINES</span>
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight mt-1">Emergency Hotlines Directory</h2>
+          <p class="text-slate-500 text-sm mt-1">Direct phone numbers for MDRRMO Morong, PNP Station, BFP, and local hospitals.</p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" id="directory-grid">
+          <!-- Dynamically Injected -->
+        </div>
+      </section>
+
+
+      <!-- ================= TAB 5: KNOWLEDGE ASSESSMENT ================= -->
+      <section id="view-quiz" class="tab-content space-y-6">
+        <div class="bg-blue-900 text-white p-6 sm:p-8 rounded-2xl shadow-md border border-blue-800 text-center max-w-3xl mx-auto">
+          <span class="bg-blue-800 text-blue-200 text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full">INTERACTIVE ASSESSMENT</span>
+          <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight mt-2">Morong History & DRRM Quiz</h2>
+          <p class="text-blue-200 text-sm mt-1">Test your knowledge about the local history, traditions, and safety guidelines in Morong.</p>
+        </div>
+
+        <div class="max-w-2xl mx-auto bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-xl">
+          <div class="flex justify-between items-center mb-6 text-xs font-bold text-slate-400 border-b pb-3">
+            <span id="quiz-progress-text">Question 1 of 20</span>
+            <span id="quiz-score-text" class="text-blue-600 font-extrabold">Score: 0</span>
+          </div>
+
+          <div id="quiz-card-content" class="space-y-6">
+            <h3 id="quiz-question-title" class="text-lg font-extrabold text-slate-900 leading-snug">Loading question...</h3>
+            <div id="quiz-options-container" class="space-y-3">
+              <!-- Dynamically Injected -->
+            </div>
+          </div>
+
+          <div class="mt-6 flex justify-end">
+            <button id="quiz-next-btn" onclick="nextQuizQuestion()" class="hidden bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs px-6 py-3 rounded-xl transition-all shadow-md">
+              Next Question &rarr;
+            </button>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-slate-900 text-slate-400 text-xs py-8 border-t border-slate-800 mt-auto">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
+        <div class="flex items-center space-x-2">
+          <div class="bg-blue-600 text-white font-bold text-xs w-6 h-6 rounded flex items-center justify-center">M</div>
+          <span class="text-slate-200 font-bold">Morong Knowledge & DRRM Portal</span>
+        </div>
+        <p>&copy; Municipal Government of Morong, Rizal. All rights reserved.</p>
+      </div>
+    </footer>
+
+  </div>
+
+
+  <!-- ================================================================= -->
+  <!-- 4. MODAL: DETAILS VIEW -->
+  <!-- ================================================================= -->
+  <div id="item-modal" class="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-xl w-full overflow-hidden modal-anim flex flex-col max-h-[90vh]">
+      <div id="modal-image-container" class="relative h-60 bg-slate-900 overflow-hidden flex items-center justify-center">
+        <div id="modal-media-slot" class="w-full h-full"></div>
+        <button onclick="closeModal()" class="absolute top-3 right-3 bg-slate-900/80 hover:bg-slate-900 text-white w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm shadow z-10">&times;</button>
+        <span id="modal-category" class="absolute top-3 left-3 bg-blue-600 text-white text-[10px] font-extrabold uppercase tracking-widest px-2.5 py-1 rounded-md shadow z-10">HISTORY</span>
+      </div>
+      <div class="p-6 overflow-y-auto space-y-4">
+        <h3 id="modal-title" class="text-2xl font-extrabold text-slate-900 leading-tight">Title</h3>
+        <p id="modal-description" class="text-slate-600 text-sm leading-relaxed">Description...</p>
+        <div id="modal-extra" class="bg-slate-50 p-4 rounded-xl border border-slate-100 text-xs font-medium text-slate-700">
+          Additional details...
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ================================================================= -->
+  <!-- 5. MODAL: USER ACCOUNT SETTINGS (PROFILE & SECURITY) -->
+  <!-- ================================================================= -->
+  <div id="settings-modal" class="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full overflow-hidden modal-anim flex flex-col max-h-[90vh]">
+      
+      <!-- Settings Header -->
+      <div class="px-6 py-4 bg-slate-900 text-white flex items-center justify-between">
+        <div>
+          <h3 class="font-extrabold text-base">User Account Settings</h3>
+          <p class="text-[11px] text-slate-400">Manage your profile and account security</p>
+        </div>
+        <button onclick="closeSettingsModal()" class="text-slate-400 hover:text-white font-bold text-xl">&times;</button>
+      </div>
+
+      <!-- Settings Sub-Tabs Navigation -->
+      <div class="flex border-b border-slate-200 bg-slate-50 px-6 pt-3 text-xs font-bold">
+        <button id="settings-tab-profile-btn" onclick="switchSettingsTab('profile')" class="pb-3 px-4 border-b-2 border-blue-600 text-blue-600 transition-all">Profile Information</button>
+        <button id="settings-tab-security-btn" onclick="switchSettingsTab('security')" class="pb-3 px-4 border-b-2 border-transparent text-slate-500 hover:text-slate-800 transition-all">Account Security</button>
+      </div>
+
+      <!-- Settings Content Body -->
+      <div class="p-6 overflow-y-auto space-y-4">
+        
+        <!-- SECTION 1: PROFILE INFORMATION -->
+        <div id="settings-content-profile" class="space-y-4">
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">Full Name</label>
+            <input type="text" id="settings-input-name" value="Juan Dela Cruz" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-blue-600">
+          </div>
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">Email Address</label>
+            <input type="email" id="settings-input-email" value="resident@morong.gov.ph" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-blue-600">
+          </div>
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">Barangay in Morong</label>
+            <select id="settings-select-barangay" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-blue-600">
+              <option value="Bombongan">Barangay Bombongan</option>
+              <option value="Can-Cal-Lan">Barangay Can-Cal-Lan</option>
+              <option value="Lagundi">Barangay Lagundi</option>
+              <option value="Maybancal">Barangay Maybancal</option>
+              <option value="San Guillermo">Barangay San Guillermo</option>
+              <option value="San Jose">Barangay San Jose (Poblacion)</option>
+              <option value="San Juan" selected>Barangay San Juan (Poblacion)</option>
+              <option value="San Pedro">Barangay San Pedro (Poblacion)</option>
+            </select>
+          </div>
+          <div class="pt-2">
+            <button onclick="saveProfileChanges()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs uppercase tracking-wider py-3 rounded-xl shadow transition-all">
+              Save Profile Changes
+            </button>
+          </div>
+        </div>
+
+        <!-- SECTION 2: ACCOUNT SECURITY -->
+        <div id="settings-content-security" class="space-y-4 hidden">
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">Current Password</label>
+            <input type="password" placeholder="••••••••" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-blue-600">
+          </div>
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">New Password</label>
+            <input type="password" placeholder="••••••••" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-blue-600">
+          </div>
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">Confirm New Password</label>
+            <input type="password" placeholder="••••••••" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-blue-600">
+          </div>
+          <div class="pt-2">
+            <button onclick="savePasswordChanges()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs uppercase tracking-wider py-3 rounded-xl shadow transition-all">
+              Update Password
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ================================================================= -->
+  <!-- 6. JAVASCRIPT APP LOGIC -->
+  <!-- ================================================================= -->
+  <script>
+    /* AI GENERATED SVG ARTWORK FOR ST. JEROME CHURCH */
+    const CHURCH_AI_SVG = `
+      <svg class="w-full h-full" viewBox="0 0 800 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="800" height="500" fill="url(#skyGradient)"/>
+        <defs>
+          <linearGradient id="skyGradient" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#1e3a8a"/>
+            <stop offset="60%" stop-color="#3b82f6"/>
+            <stop offset="100%" stop-color="#93c5fd"/>
+          </linearGradient>
+        </defs>
+        <circle cx="680" cy="90" r="45" fill="#fef08a" opacity="0.8"/>
+        <rect y="400" width="800" height="100" fill="#334155"/>
+        <rect y="420" width="800" height="80" fill="#1e293b"/>
+        <rect x="250" y="180" width="300" height="220" fill="#e2e8f0"/>
+        <polygon points="250,180 400,90 550,180" fill="#cbd5e1"/>
+        <rect x="360" y="70" width="80" height="150" fill="#f1f5f9"/>
+        <polygon points="350,70 400,20 450,70" fill="#94a3b8"/>
+        <rect x="393" y="0" width="14" height="30" fill="#fbbf24"/>
+        <rect x="385" y="8" width="30" height="14" fill="#fbbf24"/>
+        <path d="M 365,260 A 35,35 0 0,1 435,260 L 435,400 L 365,400 Z" fill="#0f172a"/>
+        <path d="M 385,100 A 15,15 0 0,1 415,100 L 415,140 L 385,140 Z" fill="#1e293b"/>
+        <path d="M 280,220 A 20,20 0 0,1 320,220 L 320,280 L 280,280 Z" fill="#334155"/>
+        <path d="M 480,220 A 20,20 0 0,1 520,220 L 520,280 L 480,280 Z" fill="#334155"/>
+        <rect x="260" y="180" width="20" height="220" fill="#94a3b8"/>
+        <rect x="520" y="180" width="20" height="220" fill="#94a3b8"/>
+        <circle cx="340" cy="385" r="12" fill="#d97706"/>
+        <circle cx="460" cy="385" r="12" fill="#d97706"/>
+      </svg>
+    `;
+
+    /* --- DATASET REPOSITORY FOR CATEGORIES --- */
+    const HISTORY_DATA = [
+      {
+        id: 'h-church',
+        title: 'St. Jerome Parish Church',
+        category: 'history',
+        categoryLabel: 'History',
+        useSvg: true,
+        image: '',
+        shortDesc: 'Built in 1615, one of Morong\'s most important historical landmarks with a century-old bell tower.',
+        fullDesc: 'St. Jerome Parish Church is a historical Spanish-era church guarded by two Chinese lion statues at its entrance façade. Constructed in 1615 by Franciscan friars and decorated by Paete craftsman Bartolome Palatino, it stands as a central monument in the history of Morong.',
+        details: 'Built: 1615 | Location: Poblacion, Barangay San Jose | Heritage Status: Historic Landmark'
+      },
+      {
+        id: 'h1',
+        title: 'Arrival of Franciscan Missionaries (1578)',
+        category: 'timeline',
+        categoryLabel: 'Timeline',
+        image: 'https://images.unsplash.com/photo-1461360370896-922624d12aa1?auto=format&fit=crop&w=800&q=80',
+        shortDesc: 'Fr. Juan de Plasencia and Fr. Diego de Oropesa arrived to establish the early settlement of Morong.',
+        fullDesc: 'In 1578, Franciscan missionaries Fr. Juan de Plasencia and Fr. Diego de Oropesa introduced Christianity along the shores of Laguna de Bay, laying the foundation for what would become the historic town of Morong.',
+        details: 'Year: 1578 | Key Figures: Fr. Juan de Plasencia & Fr. Diego de Oropesa'
+      },
+      {
+        id: 'h2',
+        title: 'Distrito Politico-Militar de Morong (1853)',
+        category: 'timeline',
+        categoryLabel: 'Timeline',
+        image: 'https://images.unsplash.com/photo-1447069387593-a5de0862481e?auto=format&fit=crop&w=800&q=80',
+        shortDesc: 'Morong was named the capital of the military-political district that preceded modern Rizal province.',
+        fullDesc: 'On February 23, 1853, the Spanish government created the Distrito Politico-Militar de Morong, designating the town of Morong as its capital. This historic district directly served as the predecessor to the modern Province of Rizal.',
+        details: 'Year: 1853 | Historic Milestone: Capital of the Distrito de Morong'
+      },
+      {
+        id: 'h3',
+        title: 'The Sanrok sa Ringring Festival',
+        category: 'culture',
+        categoryLabel: 'Culture',
+        image: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=800&q=80',
+        shortDesc: 'Celebrated every December in Morong, honoring the town\'s unique Teresian-Morong Tagalog dialect.',
+        fullDesc: 'Celebrated every December in Morong, this festival honors the town\'s unique Teresian-Morong Tagalog dialect. The name "Sanrok sa Ringring" means "ladle on the wall" — referencing the dialect\'s characteristic D-to-R sound substitution, where "sandok" becomes "sanrok" and "dingding" becomes "ringring."',
+        details: 'Period: Every December | Focus: Cultural Heritage, Dialect, & Culinary Pride'
+      },
+      {
+        id: 'h4',
+        title: 'San Geronimo Street Dance',
+        category: 'culture',
+        categoryLabel: 'Culture',
+        image: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80',
+        shortDesc: 'Vibrant street dance competition held during the fiesta of Saint Jerome, the town\'s patron saint.',
+        fullDesc: 'The San Geronimo Street Dance is a joyful, energetic festival held in honor of Morong\'s patron saint, Saint Jerome. Dancers perform lively street routines dressed in colorful traditional attire.',
+        details: 'Period: Feast Day of Saint Jerome | Highlights: Street Dance & Music'
+      },
+      {
+        id: 'ts1',
+        title: 'Morong Museum (Museong Pambayan ng Morong)',
+        category: 'tourist-spot',
+        categoryLabel: 'Tourist Spot',
+        image: 'https://images.unsplash.com/photo-1566127444979-b3d2b654e3d7?auto=format&fit=crop&w=800&q=80',
+        shortDesc: 'Historical museum located in the old municipal building, featuring the town’s history and heritage.',
+        fullDesc: 'Historical museum located in the old municipal building, featuring the town’s rich history, cultural heritage, artifacts, and old photographs.',
+        details: 'Location: Old Municipal Building, Barangay San Pedro | Type: Heritage Museum'
+      },
+      {
+        id: 'ts2',
+        title: 'Uugong Park',
+        category: 'tourist-spot',
+        categoryLabel: 'Tourist Spot',
+        image: 'https://images.unsplash.com/photo-1432405972618-c60b0225b8f9?auto=format&fit=crop&w=800&q=80',
+        shortDesc: 'A local recreational and nature-oriented destination in Barangay Bombongan.',
+        fullDesc: 'A local recreational and nature-oriented destination known for its roaring cascades, rock formations, and refreshing environment.',
+        details: 'Location: Barangay Bombongan | Attraction: Eco-Park & Waterfalls'
+      },
+      {
+        id: 'ts3',
+        title: 'St. Jerome Parish Church',
+        category: 'tourist-spot',
+        categoryLabel: 'Tourist Spot',
+        useSvg: true,
+        image: '',
+        shortDesc: 'One of Morong’s most important historical landmarks, known for its distinctive architecture and old bell tower.',
+        fullDesc: 'One of Morong’s most important historical landmarks, known for its distinctive Spanish-Baroque architecture, Chinese lion statues, and old bell tower.',
+        details: 'Location: Poblacion, Barangay San Jose | Built: 1615 | Designation: Historic Landmark'
+      },
+      {
+        id: 'ts4',
+        title: 'Morong Town Plaza',
+        category: 'tourist-spot',
+        categoryLabel: 'Tourist Spot',
+        image: 'https://images.unsplash.com/photo-1519331379826-f10be5486c6f?auto=format&fit=crop&w=800&q=80',
+        shortDesc: 'Located in Barangay San Pedro, in front of the historic old municipal building.',
+        fullDesc: 'Public park and central gathering space located in Barangay San Pedro, right in front of the historic old municipal building.',
+        details: 'Location: Barangay San Pedro | Type: Public Plaza & Civic Center'
+      },
+      {
+        id: 'ts5',
+        title: 'Puking Bato / Duckling Society Park',
+        category: 'tourist-spot',
+        categoryLabel: 'Tourist Spot',
+        image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80',
+        shortDesc: 'A local riverside/estuary area where people can walk, relax, and enjoy the scenery.',
+        fullDesc: 'A local riverside and estuary area where residents and visitors can walk, relax, breeze through, and enjoy scenic water views.',
+        details: 'Location: Riverside/Estuary Area, Morong | Type: Recreational Park'
+      },
+      {
+        id: 'ts6',
+        title: 'Cavalier Monument',
+        category: 'tourist-spot',
+        categoryLabel: 'Tourist Spot',
+        image: 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=800&q=80',
+        shortDesc: 'A recognizable landmark in Maybancal depicting a mounted armored knight.',
+        fullDesc: 'A recognizable landmark located in Barangay Maybancal depicting a mounted armored knight riding a horse.',
+        details: 'Location: Barangay Maybancal | Type: Public Landmark / Statue'
+      },
+      {
+        id: 'ts7',
+        title: 'Sir Robert Farm',
+        category: 'tourist-spot',
+        categoryLabel: 'Tourist Spot',
+        image: 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=800&q=80',
+        shortDesc: 'A farm-based recreational destination in Barangay Lambingan.',
+        fullDesc: 'A farm-based recreational destination in Barangay Lambingan offering fresh air, agricultural views, and leisure spots.',
+        details: 'Location: Barangay Lambingan | Type: Agri-Tourism Farm'
+      },
+      {
+        id: 'ts8',
+        title: 'The Boss Cabin',
+        category: 'tourist-spot',
+        categoryLabel: 'Tourist Spot',
+        image: 'https://images.unsplash.com/photo-1587061949409-02df41d5e562?auto=format&fit=crop&w=800&q=80',
+        shortDesc: 'A private recreational/tourist destination along Lambingan Road.',
+        fullDesc: 'A private recreational and tourist destination situated along Lambingan Road, ideal for staycations and quick getaways.',
+        details: 'Location: Lambingan Road | Type: Private Cabin / Staycation Resort'
+      },
+      {
+        id: 'ts9',
+        title: 'Gracious Place',
+        category: 'tourist-spot',
+        categoryLabel: 'Tourist Spot',
+        image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80',
+        shortDesc: 'A private destination in Maybancal that can be considered for leisure and group activities.',
+        fullDesc: 'A private destination in Barangay Maybancal suitable for leisure gatherings, events, and group activities.',
+        details: 'Location: Barangay Maybancal | Type: Private Resort & Events Place'
+      },
+      {
+        id: 'ts10',
+        title: 'BALAI AURORA',
+        category: 'tourist-spot',
+        categoryLabel: 'Tourist Spot',
+        image: 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=800&q=80',
+        shortDesc: 'A private resort/accommodation option in Morong.',
+        fullDesc: 'A cozy private resort and accommodation option in Morong providing pool facilities and vacation rentals.',
+        details: 'Location: Morong, Rizal | Type: Private Resort / Lodging'
+      },
+      {
+        id: 'r1',
+        title: 'Kanto Kape',
+        category: 'dining',
+        categoryLabel: 'Restaurants & Cafés',
+        image: 'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?auto=format&fit=crop&w=800&q=80',
+        shortDesc: 'Popular local coffee shop serving affordable espresso drinks and snacks.',
+        fullDesc: 'A cozy neighborhood coffee spot offering affordable cold drinks, espresso-based coffees, and light snacks for locals and travelers.',
+        details: 'Location: Morong | Specialty: Espresso & Iced Drinks'
+      },
+      {
+        id: 'r2',
+        title: 'Kafe Tents',
+        category: 'dining',
+        categoryLabel: 'Restaurants & Cafés',
+        image: 'https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=800&q=80',
+        shortDesc: 'Tent-themed outdoor café with relaxed dining vibes.',
+        fullDesc: 'A unique tent-themed outdoor café where guests can relax under illuminated tents while enjoying milk teas, coffee, and comfort food.',
+        details: 'Location: Morong | Specialty: Outdoor Glamping-Style Dining'
+      },
+      {
+        id: 'r3',
+        title: 'Bukid Cafe',
+        category: 'dining',
+        categoryLabel: 'Restaurants & Cafés',
+        image: 'https://images.unsplash.com/photo-1442512595331-e89e73853f31?auto=format&fit=crop&w=800&q=80',
+        shortDesc: 'Rustic farm café located in Barangay Bombongan.',
+        fullDesc: 'Nestled in Barangay Bombongan near Uugong Park, Bukid Cafe offers fresh brewed coffee, snacks, and scenic farm views.',
+        details: 'Location: Barangay Bombongan | Specialty: Farm Views & Fresh Brews'
+      },
+      {
+        id: 'r4',
+        title: 'Alunsina Cafe',
+        category: 'dining',
+        categoryLabel: 'Restaurants & Cafés',
+        image: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=800&q=80',
+        shortDesc: 'Charming aesthetic café known for handcrafted coffees and pastries.',
+        fullDesc: 'Alunsina Cafe offers a modern aesthetic ambiance paired with delicious handcrafted beverages, cheesecakes, and pasta dishes.',
+        details: 'Location: Morong | Specialty: Artisanal Coffee & Pastries'
+      },
+      {
+        id: 'r5',
+        title: 'Tia Chiquiting Coffee Shop',
+        category: 'dining',
+        categoryLabel: 'Restaurants & Cafés',
+        image: 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=800&q=80',
+        shortDesc: 'Heritage-style coffee shop serving local dishes and coffee.',
+        fullDesc: 'A warm heritage coffee shop named after local culture, serving classic hot brews, traditional Filipino merienda, and comfort meals.',
+        details: 'Location: Morong Poblacion | Specialty: Traditional Brews & Merienda'
+      },
+      {
+        id: 'r6',
+        title: 'Chilichan',
+        category: 'dining',
+        categoryLabel: 'Restaurants & Cafés',
+        image: 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=800&q=80',
+        shortDesc: 'Restaurant along Main Road, Taghangin.',
+        fullDesc: 'A popular local dining spot in Taghangin serving a variety of comfort foods, sizzling dishes, and flavorful meals.',
+        details: 'Location: Main Road, Taghangin | Specialty: Sizzling & Comfort Dishes'
+      },
+      {
+        id: 'r7',
+        title: 'Tapsihan sa Pantalan',
+        category: 'dining',
+        categoryLabel: 'Restaurants & Cafés',
+        image: 'https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80',
+        shortDesc: 'Casual Filipino dining option in Morong.',
+        fullDesc: 'A favorite local eatery specializing in budget-friendly silog meals, traditional Filipino breakfast plates, and quick bites.',
+        details: 'Location: Pantalan Area, Morong | Specialty: Tapsilog & Filipino Meals'
+      },
+      {
+        id: 'r8',
+        title: 'Kape Natividad',
+        category: 'dining',
+        categoryLabel: 'Restaurants & Cafés',
+        image: 'https://images.unsplash.com/photo-1497636577773-f1231844b336?auto=format&fit=crop&w=800&q=80',
+        shortDesc: 'Cozy coffee shop known for signature frappes and hot brews.',
+        fullDesc: 'Kape Natividad delivers a cozy homey atmosphere with signature cold coffee drinks, frappes, teas, and savory sandwiches.',
+        details: 'Location: Morong | Specialty: Coffee Frappes & Sandwiches'
+      },
+      {
+        id: 'r9',
+        title: 'Sining at Kape',
+        category: 'dining',
+        categoryLabel: 'Restaurants & Cafés',
+        image: 'https://images.unsplash.com/photo-1511920170033-f8396924c348?auto=format&fit=crop&w=800&q=80',
+        shortDesc: 'Art-inspired café blending local artwork with specialty coffee.',
+        fullDesc: 'An artistic hub in Morong where visitors can appreciate paintings and creative works while enjoying rich local coffees.',
+        details: 'Location: Morong | Specialty: Art Gallery & Brewed Coffee'
+      },
+      {
+        id: 'r10',
+        title: 'Cafe Morong',
+        category: 'dining',
+        categoryLabel: 'Restaurants & Cafés',
+        image: 'https://images.unsplash.com/photo-1469631422524-11884249a5b3?auto=format&fit=crop&w=800&q=80',
+        shortDesc: 'Classic town café offering full meals and refreshing drinks.',
+        fullDesc: 'A staple dining destination for families and friends in Morong, offering Filipino favorites, pastas, coffees, and desserts.',
+        details: 'Location: Morong Poblacion | Specialty: Family Dining & Coffee'
+      },
+      {
+        id: 'r11',
+        title: 'Ginhawa Cafe',
+        category: 'dining',
+        categoryLabel: 'Restaurants & Cafés',
+        image: 'https://images.unsplash.com/photo-1521017432531-fbd92d768814?auto=format&fit=crop&w=800&q=80',
+        shortDesc: 'Relaxing lounge café with fruit teas and espresso.',
+        fullDesc: 'True to its name ("Ginhawa"), this café provides a relaxing stop for refreshing fruit teas, lattes, and comfort rice bowls.',
+        details: 'Location: Morong | Specialty: Fruit Teas & Espresso'
+      },
+      {
+        id: 'r12',
+        title: 'Calle Ocho Cafe',
+        category: 'dining',
+        categoryLabel: 'Restaurants & Cafés',
+        image: 'https://images.unsplash.com/photo-1507133750040-4a8f57021571?auto=format&fit=crop&w=800&q=80',
+        shortDesc: 'Street-side café offering snacks, coffee, and frappes.',
+        fullDesc: 'A vibrant street-side hangout spot in Morong popular among students and young adults for milk teas, snacks, and iced coffee.',
+        details: 'Location: Morong | Specialty: Milk Tea & Iced Coffee'
+      },
+      {
+        id: 'r13',
+        title: 'Reserva Cafe',
+        category: 'dining',
+        categoryLabel: 'Restaurants & Cafés',
+        image: 'https://images.unsplash.com/photo-1447933601403-0c6688de566e?auto=format&fit=crop&w=800&q=80',
+        shortDesc: 'Premium specialty coffee bean selection and cozy ambiance.',
+        fullDesc: 'Reserva Cafe focuses on premium roast beans, pour-over coffees, and delicious cakes for dedicated coffee lovers.',
+        details: 'Location: Morong | Specialty: Specialty Coffee & Pour-Overs'
+      },
+      {
+        id: 'b-bombongan',
+        title: 'Barangay Bombongan',
+        category: 'barangay',
+        categoryLabel: 'Barangay',
+        image: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80',
+        shortDesc: 'Famous for its lush eco-parks, Uugong Park & Falls, natural springs, and rural scenery.',
+        fullDesc: 'Barangay Bombongan is a scenic barangay in Morong known for its rich eco-tourism destinations such as Uugong Park and refreshing natural waterways.',
+        details: 'Barangay Type: Rural / Eco-Tourism Hub | Highlights: Uugong Park & Bukid Cafe'
+      },
+      {
+        id: 'b-cancallan',
+        title: 'Barangay Can-Cal-Lan',
+        category: 'barangay',
+        categoryLabel: 'Barangay',
+        image: 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=800&q=80',
+        shortDesc: 'Residential community along key arterial roads in Morong.',
+        fullDesc: 'Barangay Can-Cal-Lan is a vibrant residential community offering active community hubs, local commercial establishments, and access roads.',
+        details: 'Barangay Type: Residential | Evacuation Facility: Can-Cal-Lan Covered Court'
+      },
+      {
+        id: 'b-lagundi',
+        title: 'Barangay Lagundi',
+        category: 'barangay',
+        categoryLabel: 'Barangay',
+        image: 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=800&q=80',
+        shortDesc: 'Key barangay connecting Morong to neighboring towns along the highway.',
+        fullDesc: 'Barangay Lagundi is an accessible barangay along the main provincial highway housing commercial establishments, residential subdivisions, and local farms.',
+        details: 'Barangay Type: Highway Corridor / Suburban | Evacuation Facility: Lagundi Covered Court'
+      },
+      {
+        id: 'b-maybancal',
+        title: 'Barangay Maybancal',
+        category: 'barangay',
+        categoryLabel: 'Barangay',
+        image: 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=800&q=80',
+        shortDesc: 'Home to the Cavalier Monument and Gracious Place.',
+        fullDesc: 'Barangay Maybancal is a prominent barangay featuring famous landmarks such as the Cavalier Monument knight statue and private recreational destinations.',
+        details: 'Barangay Type: Mixed Residential & Commercial | Landmarks: Cavalier Monument, Gracious Place'
+      },
+      {
+        id: 'b-sanguillermo',
+        title: 'Barangay San Guillermo',
+        category: 'barangay',
+        categoryLabel: 'Barangay',
+        image: 'https://images.unsplash.com/photo-1513836279014-a89f7a76ae86?auto=format&fit=crop&w=800&q=80',
+        shortDesc: 'A large agricultural and residential barangay in northern Morong.',
+        fullDesc: 'Barangay San Guillermo features wide green fields, residential areas, elementary schools, and strong community agricultural traditions.',
+        details: 'Barangay Type: Agricultural / Residential | Evacuation Facility: San Guillermo Elem. School Gym'
+      },
+      {
+        id: 'b-sanjose',
+        title: 'Barangay San Jose (Poblacion)',
+        category: 'barangay',
+        categoryLabel: 'Barangay',
+        image: 'https://images.unsplash.com/photo-1577083552431-6e5fd01aa342?auto=format&fit=crop&w=800&q=80',
+        shortDesc: 'The main Poblacion town center housing St. Jerome Parish Church and municipal offices.',
+        fullDesc: 'Barangay San Jose serves as the political, historical, and economic center of Morong, hosting the historic St. Jerome Church and main municipal offices.',
+        details: 'Barangay Type: Town Center (Poblacion) | Landmarks: St. Jerome Parish Church'
+      },
+      {
+        id: 'b-sanjuan',
+        title: 'Barangay San Juan (Poblacion)',
+        category: 'barangay',
+        categoryLabel: 'Barangay',
+        image: 'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?auto=format&fit=crop&w=800&q=80',
+        shortDesc: 'Poblacion barangay housing Morong National High School and central commerce.',
+        fullDesc: 'Barangay San Juan forms part of the central Poblacion district, hosting major public educational institutions like Morong National High School and vibrant trade.',
+        details: 'Barangay Type: Town Center (Poblacion) | Evacuation Facility: Morong National High School'
+      },
+      {
+        id: 'b-sanpedro',
+        title: 'Barangay San Pedro (Poblacion)',
+        category: 'barangay',
+        categoryLabel: 'Barangay',
+        image: 'https://images.unsplash.com/photo-1519331379826-f10be5486c6f?auto=format&fit=crop&w=800&q=80',
+        shortDesc: 'Historic Poblacion barangay featuring Morong Town Plaza and Museong Pambayan.',
+        fullDesc: 'Barangay San Pedro is a historical center of Morong where the Morong Town Plaza and the historic old municipal hall (Museong Pambayan ng Morong) are located.',
+        details: 'Barangay Type: Town Center (Poblacion) | Landmarks: Morong Museum, Morong Town Plaza'
+      }
+    ];
+
+    const EVACUATION_DATA = [
+      { barangay: 'Barangay Bombongan', facility: 'Bombongan Barangay Hall & Plaza', capacity: '300 Persons', contact: '0920-333-8821', status: 'READY' },
+      { barangay: 'Barangay Can-Cal-Lan', facility: 'Can-Cal-Lan Covered Multi-Purpose Court', capacity: '350 Persons', contact: '0917-222-1044', status: 'READY' },
+      { barangay: 'Barangay Lagundi', facility: 'Lagundi Covered Basketball Court', capacity: '450 Persons', contact: '0999-111-4455', status: 'STANDBY' },
+      { barangay: 'Barangay Maybancal', facility: 'Maybancal Elementary School Gym', capacity: '500 Persons', contact: '0919-777-6622', status: 'READY' },
+      { barangay: 'Barangay San Guillermo', facility: 'San Guillermo Elem. School Gym', capacity: '500 Persons', contact: '0921-888-3321', status: 'READY' },
+      { barangay: 'Barangay San Jose (Poblacion)', facility: 'Morong Central Elementary Gym', capacity: '600 Persons', contact: '(02) 8653-1100', status: 'READY' },
+      { barangay: 'Barangay San Juan (Poblacion)', facility: 'Morong National High School Multi-Purpose', capacity: '850 Persons', contact: '0918-444-0231', status: 'READY' },
+      { barangay: 'Barangay San Pedro (Poblacion)', facility: 'San Pedro Barangay Covered Court', capacity: '400 Persons', contact: '0917-555-0192', status: 'READY' }
+    ];
+
+    const DIRECTORY_DATA = [
+      { title: 'MDRRMO Morong Hotline', icon: '🚨', number: '(02) 8653-1200', desc: 'Primary helpline for disaster response, flood evacuation, and rescue operations.', badge: '24/7 MDRRMO' },
+      { title: 'PNP Morong Station', icon: '👮', number: '(02) 8653-1111', desc: 'Local police force for peace, order, and public security.', badge: 'PNP Morong' },
+      { title: 'Bureau of Fire Protection (BFP)', icon: '🚒', number: '(02) 8653-2222', desc: 'Fire department for emergency response and fire safety.', badge: 'BFP Station' },
+      { title: 'Morong Doctor\'s Hospital', icon: '🏥', number: '(02) 8653-3000', desc: 'Private medical facility offering emergency ambulance services.', badge: 'Hospital' },
+      { title: 'Rizal Provincial Hospital (Morong)', icon: '🚑', number: '(02) 8653-1342', desc: 'Public government hospital located in Morong, Rizal.', badge: 'Public Health' },
+      { title: 'Meralco Emergency Line', icon: '⚡', number: '16211', desc: 'Power outage reports and electrical line hazards.', badge: 'Utility' }
+    ];
+
+    const QUIZ_QUESTIONS = [
+      {
+        question: 'What does the festival name "Sanrok sa Ringring" mean in the unique Morong Tagalog dialect?',
+        options: ['Spoon on the table', 'Ladle on the wall', 'Plate on the shelf', 'Pot on the stove'],
+        correct: 'Ladle on the wall',
+        explanation: '"Sanrok sa Ringring" translates to "ladle on the wall", highlighting the D-to-R sound substitution where "sandok" becomes "sanrok" and "dingding" becomes "ringring".'
+      },
+      {
+        question: 'Which cultural event features vibrant street dances honoring the patron saint of Morong?',
+        options: ['Higantes Festival', 'Carabao Festival', 'San Geronimo Street Dance', 'Pahiyas Festival'],
+        correct: 'San Geronimo Street Dance',
+        explanation: 'The San Geronimo Street Dance features energetic dance routines honoring Saint Jerome, the patron saint of Morong.'
+      },
+      {
+        question: 'In what year was the historic St. Jerome Parish Church built?',
+        options: ['1578', '1853', '1901', '1615'],
+        correct: '1615',
+        explanation: 'The St. Jerome Parish Church was constructed in 1615 under Spanish Franciscan guidance.'
+      },
+      {
+        question: 'Which eco-tourism spot in Barangay Bombongan is famous for its natural cascading waters?',
+        options: ['Uugong Park & Falls', 'Daranak Falls', 'Hinulugang Taktak', 'Pagsanjan Falls'],
+        correct: 'Uugong Park & Falls',
+        explanation: 'Uugong Park & Falls is located in Barangay Bombongan, Morong, Rizal.'
+      },
+      {
+        question: 'What is the immediate standard safety action during an earthquake?',
+        options: ['Run outside immediately', 'Use the elevator', 'Stand near glass windows', 'Duck, Cover, and Hold'],
+        correct: 'Duck, Cover, and Hold',
+        explanation: 'The standard emergency safety response during an earthquake is "Duck, Cover, and Hold".'
+      },
+      {
+        question: 'Who were the two Franciscan missionaries that arrived in Morong in 1578?',
+        options: ['Fr. Jose Burgos & Fr. Mariano Gomez', 'Fr. Juan de Plasencia & Fr. Diego de Oropesa', 'Fr. Pedro Chirino & Fr. Juan de Valderrama', 'Fr. Andres de Urdaneta & Fr. Martin de Rada'],
+        correct: 'Fr. Juan de Plasencia & Fr. Diego de Oropesa',
+        explanation: 'Franciscan missionaries Fr. Juan de Plasencia and Fr. Diego de Oropesa introduced Christianity to the region in 1578.'
+      },
+      {
+        question: 'In what year was the Distrito Politico-Militar de Morong officially established?',
+        options: ['1789', '1898', '1853', '1901'],
+        correct: '1853',
+        explanation: 'On February 23, 1853, the Spanish government created the Distrito Politico-Militar de Morong, with Morong town as its capital.'
+      },
+      {
+        question: 'Which historic district served as the direct predecessor to the modern Province of Rizal?',
+        options: ['Distrito de Tondo', 'Provincia de La Laguna', 'Provincia de Tayabas', 'Distrito Politico-Militar de Morong'],
+        correct: 'Distrito Politico-Militar de Morong',
+        explanation: 'The Distrito Politico-Militar de Morong was the administrative predecessor before the province was renamed Rizal in 1901.'
+      },
+      {
+        question: 'What unique architectural detail guards the entrance facade of St. Jerome Parish Church?',
+        options: ['Two Chinese lion statues', 'Two gargoyles', 'Two wooden angels', 'Two bronze cannons'],
+        correct: 'Two Chinese lion statues',
+        explanation: 'St. Jerome Parish Church is uniquely decorated with two Chinese lion statues at its entrance facade.'
+      },
+      {
+        question: 'Where is the Museong Pambayan ng Morong (Morong Museum) located?',
+        options: ['St. Jerome Church Belfry', 'Uugong Park Hall', 'Old Municipal Building in Barangay San Pedro', 'Morong National High School'],
+        correct: 'Old Municipal Building in Barangay San Pedro',
+        explanation: 'The Museong Pambayan ng Morong is situated inside the historic old municipal building in Barangay San Pedro.'
+      },
+      {
+        question: 'Which landmark depicting a mounted armored knight riding a horse is found in Barangay Maybancal?',
+        options: ['Rizal Monument', 'Bantayog ng Bayani', 'Centennial Arch', 'Cavalier Monument'],
+        correct: 'Cavalier Monument',
+        explanation: 'The Cavalier Monument in Barangay Maybancal depicts a knight on horseback.'
+      },
+      {
+        question: 'How many official barangays make up the Municipality of Morong, Rizal?',
+        options: ['6', '12', '8', '15'],
+        correct: '8',
+        explanation: 'Morong is composed of 8 official barangays: Bombongan, Can-Cal-Lan, Lagundi, Maybancal, San Guillermo, San Jose, San Juan, and San Pedro.'
+      },
+      {
+        question: 'Which major educational institution serves as an evacuation center in Barangay San Juan?',
+        options: ['Morong National High School', 'Rizal Technological University', 'Tomas Claudio Colleges', 'Morong Central Elementary'],
+        correct: 'Morong National High School',
+        explanation: 'Morong National High School in Barangay San Juan is designated as a major evacuation center.'
+      },
+      {
+        question: 'Which body of water borders Morong and presents a potential flood risk during heavy typhoons?',
+        options: ['Taal Lake', 'Manila Bay', 'Seven Lakes of San Pablo', 'Laguna de Bay'],
+        correct: 'Laguna de Bay',
+        explanation: 'Morong lies along the northern shores of Laguna de Bay, making lower areas vulnerable to rising water levels during typhoons.'
+      },
+      {
+        question: 'How long should supplies in your Emergency Go Bag last at minimum?',
+        options: ['12 hours', '1 week', '3 days (72 hours)', '1 month'],
+        correct: '3 days (72 hours)',
+        explanation: 'Standard emergency preparedness guidelines recommend keeping at least a 3-day (72-hour) supply of food and water per person.'
+      },
+      {
+        question: 'What is the primary hotline number for MDRRMO Morong disaster emergency response?',
+        options: ['911', '(02) 8653-1200', '117', '(02) 8888-0000'],
+        correct: '(02) 8653-1200',
+        explanation: 'The direct landline hotline for MDRRMO Morong emergency response is (02) 8653-1200.'
+      },
+      {
+        question: 'During a typhoon warning, what should you do with electrical appliances if floodwaters begin to rise?',
+        options: ['Leave them plugged in', 'Move them to lower shelves', 'Cover them with cloth', 'Turn off the main electrical power switch'],
+        correct: 'Turn off the main electrical power switch',
+        explanation: 'To prevent electrocution and electrical fires, always switch off the main electrical breaker when floodwaters start to rise.'
+      },
+      {
+        question: 'Which local rustic farm café near Uugong Park is situated in Barangay Bombongan?',
+        options: ['Kafe Tents', 'Bukid Cafe', 'Calle Ocho Cafe', 'Reserva Cafe'],
+        correct: 'Bukid Cafe',
+        explanation: 'Bukid Cafe is located in Barangay Bombongan, offering fresh brews and rustic farm views near Uugong Park.'
+      },
+      {
+        question: 'Who was the Paete craftsman responsible for decorating the baroque façade of St. Jerome Church?',
+        options: ['Guillermo Tolentino', 'Damian Domingo', 'Juan Luna', 'Bartolome Palatino'],
+        correct: 'Bartolome Palatino',
+        explanation: 'Master woodcarver and craftsman Bartolome Palatino of Paete designed and executed the decorative baroque facade of St. Jerome Church.'
+      },
+      {
+        question: 'When returning home after a major storm or flood, what should you verify before re-entering?',
+        options: ['That the television works', 'That the streetlights are on', 'That stores nearby are open', 'That the structure is safely inspected and free from loose electrical wires'],
+        correct: 'That the structure is safely inspected and free from loose electrical wires',
+        explanation: 'Always ensure your home is structurally sound and cleared of electrical or water hazards before re-entering after a flood or disaster.'
+      }
+    ];
+
+
+    /* --- INITIALIZATION --- */
+    document.addEventListener('DOMContentLoaded', () => {
+      renderHistoryCards('all');
+      renderEvacuationTable();
+      renderDirectoryGrid();
+      renderQuizQuestion();
+    });
+
+
+    /* --- AUTHENTICATION LOGIC --- */
+    function switchAuthTab(tab) {
+      const loginBtn = document.getElementById('tab-login-btn');
+      const signupBtn = document.getElementById('tab-signup-btn');
+      const loginForm = document.getElementById('login-form');
+      const signupForm = document.getElementById('signup-form');
+
+      if (tab === 'login') {
+        loginBtn.className = 'flex-1 py-2.5 rounded-lg bg-white text-blue-600 shadow-sm transition-all';
+        signupBtn.className = 'flex-1 py-2.5 rounded-lg text-slate-500 hover:text-slate-800 transition-all';
+        loginForm.classList.remove('hidden');
+        signupForm.classList.add('hidden');
+      } else {
+        signupBtn.className = 'flex-1 py-2.5 rounded-lg bg-white text-blue-600 shadow-sm transition-all';
+        loginBtn.className = 'flex-1 py-2.5 rounded-lg text-slate-500 hover:text-slate-800 transition-all';
+        signupForm.classList.remove('hidden');
+        loginForm.classList.add('hidden');
+      }
+    }
+
+    function handleAuthSubmit(event, type) {
+      event.preventDefault();
+      
+      const emailInput = event.target.querySelector('input[type="email"]');
+      const nameInput = event.target.querySelector('input[type="text"]');
+      
+      const userDisplayName = nameInput ? nameInput.value : (emailInput ? emailInput.value.split('@')[0] : 'Resident');
+      
+      document.getElementById('user-display-name').textContent = userDisplayName;
+      if (nameInput) document.getElementById('settings-input-name').value = nameInput.value;
+      if (emailInput) document.getElementById('settings-input-email').value = emailInput.value;
+
+      document.getElementById('auth-screen').classList.add('hidden');
+      document.getElementById('app-dashboard').classList.remove('hidden');
+      document.getElementById('app-dashboard').classList.add('flex');
+    }
+
+    function logout() {
+      document.getElementById('app-dashboard').classList.add('hidden');
+      document.getElementById('app-dashboard').classList.remove('flex');
+      document.getElementById('auth-screen').classList.remove('hidden');
+    }
+
+
+    /* --- TAB SWITCHING LOGIC --- */
+    function switchMainTab(tabId) {
+      document.querySelectorAll('.tab-content').forEach(view => {
+        view.classList.remove('active');
+      });
+
+      const selectedView = document.getElementById(`view-${tabId}`);
+      if (selectedView) selectedView.classList.add('active');
+
+      document.querySelectorAll('.nav-btn').forEach(btn => {
+        btn.className = 'nav-btn px-3 py-2.5 rounded-xl text-slate-300 hover:text-white hover:bg-slate-800 transition-all flex items-center space-x-1.5';
+      });
+
+      const activeNav = document.getElementById(`nav-${tabId}`);
+      if (activeNav) {
+        activeNav.className = 'nav-btn px-3 py-2.5 rounded-xl text-blue-400 bg-blue-950/60 transition-all flex items-center space-x-1.5';
+      }
+
+      document.querySelectorAll('.mobile-nav-btn').forEach(btn => {
+        btn.className = 'mobile-nav-btn px-3 py-2 rounded-lg bg-slate-800 text-slate-300 whitespace-nowrap';
+      });
+
+      const activeMobileNav = document.getElementById(`mobile-nav-${tabId}`);
+      if (activeMobileNav) {
+        activeMobileNav.className = 'mobile-nav-btn px-3 py-2 rounded-lg bg-blue-600 text-white whitespace-nowrap';
+      }
+    }
+
+
+    /* --- SETTINGS MODAL LOGIC --- */
+    function openSettingsModal() {
+      document.getElementById('settings-modal').classList.remove('hidden');
+    }
+
+    function closeSettingsModal() {
+      document.getElementById('settings-modal').classList.add('hidden');
+    }
+
+    function switchSettingsTab(tab) {
+      const profileBtn = document.getElementById('settings-tab-profile-btn');
+      const securityBtn = document.getElementById('settings-tab-security-btn');
+      const profileContent = document.getElementById('settings-content-profile');
+      const securityContent = document.getElementById('settings-content-security');
+
+      if (tab === 'profile') {
+        profileBtn.className = 'pb-3 px-4 border-b-2 border-blue-600 text-blue-600 transition-all';
+        securityBtn.className = 'pb-3 px-4 border-b-2 border-transparent text-slate-500 hover:text-slate-800 transition-all';
+        profileContent.classList.remove('hidden');
+        securityContent.classList.add('hidden');
+      } else {
+        securityBtn.className = 'pb-3 px-4 border-b-2 border-blue-600 text-blue-600 transition-all';
+        profileBtn.className = 'pb-3 px-4 border-b-2 border-transparent text-slate-500 hover:text-slate-800 transition-all';
+        securityContent.classList.remove('hidden');
+        profileContent.classList.add('hidden');
+      }
+    }
+
+    function saveProfileChanges() {
+      const newName = document.getElementById('settings-input-name').value;
+      if (newName) {
+        document.getElementById('user-display-name').textContent = newName;
+      }
+      alert('Profile information successfully updated!');
+      closeSettingsModal();
+    }
+
+    function savePasswordChanges() {
+      alert('Password successfully updated!');
+      closeSettingsModal();
+    }
+
+
+    /* --- HISTORY / DESTINATIONS RENDER LOGIC --- */
+    function renderHistoryCards(category) {
+      const container = document.getElementById('history-cards-grid');
+      if (!container) return;
+
+      container.innerHTML = '';
+      const filtered = category === 'all' 
+        ? HISTORY_DATA 
+        : HISTORY_DATA.filter(item => item.category === category);
+
+      if (filtered.length === 0) {
+        container.innerHTML = `<div class="col-span-full text-center py-12 text-slate-400 font-medium">No items found for this category.</div>`;
+        return;
+      }
+
+      filtered.forEach(item => {
+        let badgeColor = 'bg-blue-600';
+        if (item.category === 'history') badgeColor = 'bg-indigo-600';
+        if (item.category === 'culture') badgeColor = 'bg-amber-600';
+        if (item.category === 'timeline') badgeColor = 'bg-emerald-600';
+        if (item.category === 'tourist-spot') badgeColor = 'bg-purple-600';
+        if (item.category === 'dining') badgeColor = 'bg-orange-600';
+        if (item.category === 'barangay') badgeColor = 'bg-rose-600';
+        
+        const mediaContent = item.useSvg 
+          ? CHURCH_AI_SVG 
+          : `<img src="${item.image}" alt="${item.title}" class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-300" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1548625361-188b8e0193e7?auto=format&fit=crop&w=800&q=80';">`;
+
+        const card = `
+          <div onclick="openModal('${item.id}')" class="bg-white rounded-2xl border border-slate-200/80 overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col cursor-pointer group">
+            <div class="h-48 bg-slate-900 relative overflow-hidden flex items-center justify-center">
+              ${mediaContent}
+              <span class="absolute top-3 left-3 ${badgeColor} text-white text-[10px] font-extrabold uppercase tracking-widest px-2.5 py-1 rounded-md shadow-sm z-10">${item.categoryLabel}</span>
+            </div>
+            <div class="p-5 flex-grow flex flex-col justify-between space-y-3">
+              <div>
+                <h3 class="font-extrabold text-lg text-slate-900 leading-snug group-hover:text-blue-600 transition-colors">${item.title}</h3>
+                <p class="text-xs text-slate-500 mt-1.5 leading-relaxed">${item.shortDesc}</p>
+              </div>
+              <span class="text-xs font-bold text-blue-600 pt-2 flex items-center">
+                Read More &rarr;
+              </span>
+            </div>
+          </div>
+        `;
+        container.insertAdjacentHTML('beforeend', card);
+      });
+    }
+
+    function filterHistory(cat, targetBtn) {
+      const btns = document.querySelectorAll('.hist-filter-btn');
+      btns.forEach(btn => {
+        btn.className = 'hist-filter-btn px-3.5 py-2 rounded-xl text-slate-600 hover:text-slate-900 transition-all';
+      });
+      if (targetBtn) {
+        targetBtn.className = 'hist-filter-btn px-3.5 py-2 rounded-xl bg-blue-600 text-white shadow-sm transition-all';
+      }
+      renderHistoryCards(cat);
+    }
+
+
+    /* --- DRRM TABLE RENDER --- */
+    function renderEvacuationTable() {
+      const tbody = document.getElementById('evac-table-body');
+      if (!tbody) return;
+
+      tbody.innerHTML = '';
+      EVACUATION_DATA.forEach(row => {
+        const statusBadge = row.status === 'READY' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800';
+        const tr = `
+          <tr class="hover:bg-slate-50/80 transition-colors">
+            <td class="py-3.5 px-4 font-bold text-slate-900">${row.barangay}</td>
+            <td class="py-3.5 px-4 text-slate-600">${row.facility}</td>
+            <td class="py-3.5 px-4 text-slate-600">${row.capacity}</td>
+            <td class="py-3.5 px-4 font-mono text-slate-700">${row.contact}</td>
+            <td class="py-3.5 px-4">
+              <span class="text-[10px] font-extrabold px-2.5 py-1 rounded-full ${statusBadge}">${row.status}</span>
+            </td>
+          </tr>
+        `;
+        tbody.insertAdjacentHTML('beforeend', tr);
+      });
+    }
+
+
+    /* --- DIRECTORY RENDER --- */
+    function renderDirectoryGrid() {
+      const container = document.getElementById('directory-grid');
+      if (!container) return;
+
+      container.innerHTML = '';
+      DIRECTORY_DATA.forEach(item => {
+        const card = `
+          <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm space-y-3 hover:border-blue-400 transition-all">
+            <div class="flex items-center justify-between">
+              <span class="text-3xl">${item.icon}</span>
+              <span class="bg-blue-50 text-blue-700 text-[10px] font-bold px-2.5 py-1 rounded-lg border border-blue-200/50">${item.badge}</span>
+            </div>
+            <div>
+              <h3 class="font-extrabold text-base text-slate-900">${item.title}</h3>
+              <p class="text-xs text-slate-500 mt-1">${item.desc}</p>
+            </div>
+            <div class="pt-3 border-t border-slate-100">
+              <a href="tel:${item.number}" class="text-sm font-extrabold text-blue-600 hover:underline font-mono block">${item.number}</a>
+            </div>
+          </div>
+        `;
+        container.insertAdjacentHTML('beforeend', card);
+      });
+    }
+
+
+    /* --- QUIZ LOGIC --- */
+    let currentQuizIndex = 0;
+    let quizScore = 0;
+    let shuffledOptions = [];
+
+    function shuffleArray(array) {
+      let arr = [...array];
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    function renderQuizQuestion() {
+      const q = QUIZ_QUESTIONS[currentQuizIndex];
+      const progressEl = document.getElementById('quiz-progress-text');
+      const scoreEl = document.getElementById('quiz-score-text');
+      const questionEl = document.getElementById('quiz-question-title');
+      const optionsContainer = document.getElementById('quiz-options-container');
+
+      if (!q || !optionsContainer) return;
+
+      progressEl.textContent = `Question ${currentQuizIndex + 1} of ${QUIZ_QUESTIONS.length}`;
+      scoreEl.textContent = `Score: ${quizScore}`;
+      questionEl.textContent = q.question;
+      optionsContainer.innerHTML = '';
+
+      shuffledOptions = shuffleArray(q.options);
+
+      shuffledOptions.forEach((opt) => {
+        const btn = document.createElement('button');
+        btn.className = 'w-full text-left p-4 rounded-xl border border-slate-200 text-sm font-semibold hover:bg-slate-50 transition-all flex items-center justify-between';
+        btn.innerHTML = `<span>${opt}</span><span class="opt-icon text-slate-300">⚪</span>`;
+        btn.onclick = () => selectQuizOption(opt, btn);
+        optionsContainer.appendChild(btn);
+      });
+    }
+
+    function selectQuizOption(selectedOption, selectedBtn) {
+      const q = QUIZ_QUESTIONS[currentQuizIndex];
+      const optionsContainer = document.getElementById('quiz-options-container');
+      const buttons = optionsContainer.querySelectorAll('button');
+
+      buttons.forEach(btn => btn.disabled = true);
+      const pointsPerQuestion = 100 / QUIZ_QUESTIONS.length;
+
+      if (selectedOption === q.correct) {
+        quizScore += pointsPerQuestion;
+        selectedBtn.classList.add('bg-emerald-50', 'border-emerald-500', 'text-emerald-900');
+        selectedBtn.querySelector('.opt-icon').textContent = '✅';
+      } else {
+        selectedBtn.classList.add('bg-red-50', 'border-red-500', 'text-red-900');
+        selectedBtn.querySelector('.opt-icon').textContent = '❌';
+        
+        buttons.forEach(btn => {
+          if (btn.querySelector('span').textContent === q.correct) {
+            btn.classList.add('bg-emerald-50', 'border-emerald-500', 'text-emerald-900');
+            btn.querySelector('.opt-icon').textContent = '✅';
+          }
+        });
+      }
+
+      const exp = document.createElement('div');
+      exp.className = 'text-xs text-slate-600 bg-slate-50 p-3.5 rounded-xl border border-slate-200 mt-3';
+      exp.innerHTML = `<strong>Explanation:</strong> ${q.explanation}`;
+      optionsContainer.appendChild(exp);
+
+      document.getElementById('quiz-score-text').textContent = `Score: ${quizScore}`;
+      document.getElementById('quiz-next-btn').classList.remove('hidden');
+    }
+
+    function nextQuizQuestion() {
+      currentQuizIndex++;
+      const nextBtn = document.getElementById('quiz-next-btn');
+
+      if (currentQuizIndex < QUIZ_QUESTIONS.length) {
+        renderQuizQuestion();
+        nextBtn.classList.add('hidden');
+      } else {
+        renderQuizFinish();
+      }
+    }
+
+    function renderQuizFinish() {
+      const content = document.getElementById('quiz-card-content');
+      document.getElementById('quiz-next-btn').classList.add('hidden');
+      document.getElementById('quiz-progress-text').textContent = 'Completed!';
+
+      content.innerHTML = `
+        <div class="text-center py-8 space-y-4">
+          <div class="text-5xl">🏆</div>
+          <h3 class="text-2xl font-black text-slate-900">Quiz Completed!</h3>
+          <p class="text-sm text-slate-600">Great job! Your final score is <span class="font-extrabold text-blue-600 text-xl">${quizScore} / 100</span>.</p>
+          <button onclick="restartQuiz()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs uppercase tracking-wider px-6 py-3 rounded-xl shadow-md transition-all transform active:scale-95">
+            ↺ Retake Quiz
+          </button>
+        </div>
+      `;
+    }
+
+    function restartQuiz() {
+      currentQuizIndex = 0;
+      quizScore = 0;
+
+      const content = document.getElementById('quiz-card-content');
+      content.innerHTML = `
+        <h3 id="quiz-question-title" class="text-lg font-extrabold text-slate-900 leading-snug">Loading question...</h3>
+        <div id="quiz-options-container" class="space-y-3"></div>
+      `;
+
+      renderQuizQuestion();
+    }
+
+
+    /* --- MODAL LOGIC --- */
+    function openModal(id) {
+      const item = HISTORY_DATA.find(h => h.id === id);
+      if (!item) return;
+
+      const mediaSlot = document.getElementById('modal-media-slot');
+      if (item.useSvg) {
+        mediaSlot.innerHTML = CHURCH_AI_SVG;
+      } else {
+        mediaSlot.innerHTML = `<img src="${item.image}" alt="${item.title}" class="w-full h-full object-cover object-center">`;
+      }
+
+      document.getElementById('modal-category').textContent = item.categoryLabel;
+      document.getElementById('modal-title').textContent = item.title;
+      document.getElementById('modal-description').textContent = item.fullDesc;
+      document.getElementById('modal-extra').innerHTML = `<strong>Record Details:</strong> ${item.details}`;
+
+      document.getElementById('item-modal').classList.remove('hidden');
+    }
+
+    function closeModal() {
+      document.getElementById('item-modal').classList.add('hidden');
+    }
+  </script>
+</body>
+</html>
